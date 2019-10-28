@@ -1,0 +1,7 @@
+{
+    "same": 5,
+    "diff": -5,
+    "gap": -2,
+    "max_paths": 99,
+    "max_sequence_length": 9999
+}
