@@ -1,6 +1,6 @@
 import click
-from bionw.utils import Config, read_config_file, read_fasta_file, write_alignments
-from bionw.algo import NWAlgo
+from bioinfnw.utils import Config, read_config_file, read_fasta_file, write_alignments
+from bioinfnw.algo import NWAlgo
 
 
 @click.command()

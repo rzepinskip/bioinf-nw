@@ -1,6 +1,6 @@
 import pytest
-import bionw.utils as utils
-import bionw.algo as algo
+import bioinfnw.utils as utils
+import bioinfnw.algo as algo
 
 
 def test_compute_cost_matrix():

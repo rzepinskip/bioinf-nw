@@ -14,14 +14,14 @@ def read(filename):
 
 
 setup(
-    name="bionw",
+    name="bioinfnw",
     version="0.1.0",
-    url="https://github.com/borntyping/cookiecutter-pypackage-minimal",
+    url="https://github.com/rzepinskip/bioinf-nw",
     license="MIT",
     author="Paweł Rzepiński",
     author_email="rzepinski.pawel@gmail.com",
-    description="An opinionated, minimal cookiecutter template for Python packages",
-    long_description=read("README.rst"),
+    description="Implementation of the Needleman-Wunsch algorithm for aligning DNA sequences",
+    long_description=read("README.md"),
     packages=find_packages(exclude=("tests",)),
     install_requires=[],
     classifiers=[

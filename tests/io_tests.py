@@ -1,5 +1,5 @@
 import pytest
-import bionw.utils as utils
+import bioinfnw.utils as utils
 
 
 def test_read_fasta():
@@ -33,6 +33,7 @@ def test_read_config():
     assert config.max_paths == 99
     assert config.max_sequence_length == 9999
 
+
 def test_read_config_incorrect_format():
     input = """
     {
@@ -47,6 +48,7 @@ def test_read_config_incorrect_format():
     with pytest.raises(ValueError):
         config = utils.read_config(input)
 
+
 def test_read_config_incorrect_parameters():
     input = """
     {
@@ -60,6 +62,7 @@ def test_read_config_incorrect_parameters():
 
     with pytest.raises(KeyError):
         config = utils.read_config(input)
+
 
 def test_read_config_incorrect_type():
     input = """
