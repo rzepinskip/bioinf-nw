@@ -1,5 +1,5 @@
 import click
-from bionw.utils import Config, read_config_file, read_fasta_file
+from bionw.utils import Config, read_config_file, read_fasta_file, write_alignments
 from bionw.algo import NWAlgo
 
 
@@ -23,12 +23,8 @@ def calculate_alignment(a: str, b: str, c: str, o: str):
 
     cost_matrix = algo.compute_cost_matrix(first_seq, second_seq)
     alignments = algo.get_all_alignments(first_seq, second_seq, cost_matrix)
-    with open(o, "w") as f:
-        f.write(f"SCORE={str(int(cost_matrix[len(first_seq), len(second_seq)]))}\n\n")
-        for alignment in alignments:
-            f.write(alignment[0] + "\n")
-            f.write(alignment[1] + "\n")
-            f.write("\n")
+
+    write_alignments(o, int(cost_matrix[len(first_seq), len(second_seq)]), alignments)
 
 
 if __name__ == "__main__":

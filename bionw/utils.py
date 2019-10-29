@@ -1,4 +1,5 @@
 import json
+from typing import List, Tuple
 
 
 def read_fasta_file(file):
@@ -13,7 +14,9 @@ def read_fasta(data: str) -> str:
 
 
 class Config:
-    def __init__(self, same, diff, gap, max_paths, max_sequence_length):
+    def __init__(
+        self, same: int, diff: int, gap: int, max_paths: int, max_sequence_length: int
+    ):
         self.same = same
         self.diff = diff
         self.gap = gap
@@ -42,3 +45,12 @@ def read_config(config_content: str) -> Config:
         raise KeyError("Missing config parameter") from e
     except ValueError as e:
         raise ValueError("Incorrect type of parameter") from e
+
+
+def write_alignments(file: str, score: int, alignments: List[Tuple[str, str]]):
+    with open(file, "w") as f:
+        f.write(f"SCORE={score}\n\n")
+        for alignment in alignments:
+            f.write(alignment[0] + "\n")
+            f.write(alignment[1] + "\n")
+            f.write("\n")
