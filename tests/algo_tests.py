@@ -41,6 +41,21 @@ def test_find_all_paths():
     ]
 
 
+@pytest.mark.filterwarnings("ignore:Too many paths found")
+def test_find_all_paths_truncated():
+    config = utils.Config(5, -5, -2, 1, 9999)
+    a = "SAM"
+    b = "SUM"
+    algo_instance = algo.NWAlgo(config)
+    cost_matrix = algo_instance.compute_cost_matrix(a, b)
+    graph = algo_instance._retrieve_previous_nodes(a, b, cost_matrix)
+
+    paths = algo_instance._find_all_paths(graph, (len(a), len(b)), (0, 0), list())
+    assert paths == [
+        [(3, 3), (2, 2), (2, 1), (1, 1), (0, 0)],
+    ]
+
+
 def test_get_all_alignments():
     config = utils.Config(5, -5, -2, 99, 9999)
     a = "SAM"

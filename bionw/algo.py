@@ -3,6 +3,7 @@ import warnings
 from typing import List, Any, Tuple, Dict
 from .utils import Config
 
+
 class NWAlgo:
     def __init__(self, config: Config):
         self._config = config
@@ -18,7 +19,11 @@ class NWAlgo:
             for j in range(1, (len(second_seq) + 1)):
                 left = cost_matrix[i, j - 1] + self._config.gap
                 up = cost_matrix[i - 1, j] + self._config.gap
-                comp = self._config.same if first_seq[i - 1] == second_seq[j - 1] else self._config.diff
+                comp = (
+                    self._config.same
+                    if first_seq[i - 1] == second_seq[j - 1]
+                    else self._config.diff
+                )
                 diag = cost_matrix[i - 1, j - 1] + comp
                 cost_matrix[i, j] = max(left, up, diag)
 
@@ -26,7 +31,9 @@ class NWAlgo:
 
     def get_all_alignments(self, first_seq: str, second_seq: str, cost_matrix: Any):
         graph = self._retrieve_previous_nodes(first_seq, second_seq, cost_matrix)
-        paths = self._find_all_paths(graph, (len(first_seq), len(second_seq)), (0, 0), list())
+        paths = self._find_all_paths(
+            graph, (len(first_seq), len(second_seq)), (0, 0), list()
+        )
         alignments: List[Tuple[str, str]] = list()
         for path in paths:
             first_aligned = ""
@@ -51,7 +58,9 @@ class NWAlgo:
 
         return alignments
 
-    def _retrieve_previous_nodes(self, first_seq: str, second_seq: str, cost_matrix: Any):
+    def _retrieve_previous_nodes(
+        self, first_seq: str, second_seq: str, cost_matrix: Any
+    ):
         graph = dict()
         for i in range(1, (len(first_seq) + 1))[::-1]:
             graph[(i, 0)] = [(i - 1, 0)]
@@ -61,7 +70,11 @@ class NWAlgo:
                 graph[(i, j)] = list()
                 left = cost_matrix[i, j - 1] + self._config.gap
                 up = cost_matrix[i - 1, j] + self._config.gap
-                comp = self._config.same if first_seq[i - 1] == second_seq[j - 1] else self._config.diff
+                comp = (
+                    self._config.same
+                    if first_seq[i - 1] == second_seq[j - 1]
+                    else self._config.diff
+                )
                 diag = cost_matrix[i - 1, j - 1] + comp
                 if cost_matrix[i, j] == left:
                     graph[(i, j)] += [(i, j - 1)]
@@ -73,11 +86,11 @@ class NWAlgo:
         return graph
 
     def _find_all_paths(
-        self, 
+        self,
         graph: Dict[Tuple[int, int], List[Tuple[int, int]]],
         start: Tuple[int, int],
         end: Tuple[int, int],
-        path: List[Tuple[int, int]]
+        path: List[Tuple[int, int]],
     ) -> List[List[Tuple[int, int]]]:
         path = path + [start]
         if start == end:
@@ -89,12 +102,13 @@ class NWAlgo:
         for node in graph[start]:
             if node not in path:
                 new_paths = self._find_all_paths(graph, node, end, path)
-                paths += new_paths
-
-                if len(paths) > self._config.max_paths:
+                if len(paths) + len(new_paths) > self._config.max_paths:
                     warnings.warn(
-                        f"Too many paths found. Truncating to {self._config.max_paths}", stacklevel=2
+                        f"Too many paths found. Returning top {self._config.max_paths}",
+                        stacklevel=2,
                     )
                     return paths
+                else:
+                    paths += new_paths
 
         return paths
