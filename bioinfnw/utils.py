@@ -32,7 +32,7 @@ def read_config_file(file: str) -> Config:
 def read_config(config_content: str) -> Config:
     try:
         config_dict = json.loads(config_content)
-        return Config(
+        config = Config(
             int(config_dict["SAME"]),
             int(config_dict["DIFF"]),
             int(config_dict["GAP_PENALTY"]),
@@ -46,11 +46,13 @@ def read_config(config_content: str) -> Config:
     except ValueError as e:
         raise ValueError("Incorrect type of parameter") from e
 
-    if Config.max_paths < 0:
+    if config.max_paths < 0:
         raise ValueError("Max number of paths cannot be negative")
 
-    if Config.max_sequence_length < 0:
+    if config.max_sequence_length < 0:
         raise ValueError("Max sequence length cannot be negative")
+
+    return config
 
 
 def write_alignments(file: str, score: int, alignments: List[Tuple[str, str]]):
