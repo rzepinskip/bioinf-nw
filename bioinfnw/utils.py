@@ -46,6 +46,12 @@ def read_config(config_content: str) -> Config:
     except ValueError as e:
         raise ValueError("Incorrect type of parameter") from e
 
+    if Config.max_paths < 0:
+        raise ValueError("Max number of paths cannot be negative")
+
+    if Config.max_sequence_length < 0:
+        raise ValueError("Max sequence length cannot be negative")
+
 
 def write_alignments(file: str, score: int, alignments: List[Tuple[str, str]]):
     with open(file, "w") as f:
