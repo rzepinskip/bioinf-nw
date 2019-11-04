@@ -40,19 +40,19 @@ class NWAlgo:
             second_aligned = ""
             previous_node = (len(first_seq), len(second_seq))
 
-            for node in path[1:]:
+            for current_node in path[1:]:
                 i, j = previous_node
-                if i == node[0]:
+                if i == current_node[0]:
                     first_aligned = "-" + first_aligned
                     second_aligned = second_seq[j - 1] + second_aligned
-                elif j == node[1]:
+                elif j == current_node[1]:
                     first_aligned = first_seq[i - 1] + first_aligned
                     second_aligned = "-" + second_aligned
                 else:
                     first_aligned = first_seq[i - 1] + first_aligned
                     second_aligned = second_seq[j - 1] + second_aligned
 
-                previous_node = node
+                previous_node = current_node
 
             alignments += [(first_aligned, second_aligned)]
 
@@ -62,11 +62,11 @@ class NWAlgo:
         self, first_seq: str, second_seq: str, cost_matrix: Any
     ):
         graph = dict()
-        for i in range(1, (len(first_seq) + 1))[::-1]:
+        for i in range(len(first_seq), 0, -1):
             graph[(i, 0)] = [(i - 1, 0)]
             graph[(0, i)] = [(0, i - 1)]
 
-            for j in range(1, (len(second_seq) + 1))[::-1]:
+            for j in range(len(second_seq), 0, -1):
                 graph[(i, j)] = list()
                 left = cost_matrix[i, j - 1] + self._config.gap
                 up = cost_matrix[i - 1, j] + self._config.gap
@@ -95,7 +95,7 @@ class NWAlgo:
         path = path + [start]
         if start == end:
             return [path]
-        if start not in graph:
+        elif start not in graph:
             return list()
 
         paths: List[List[Tuple[int, int]]] = list()
