@@ -3,7 +3,7 @@ import bioinfnw.utils as utils
 import bioinfnw.algo as algo
 
 
-def test_compute_cost_matrix():
+def test_compute_cost_matrix_simple():
     config = utils.Config(5, -5, -2, 99, 9999)
     a = "SAM"
     b = "SUM"
@@ -12,6 +12,17 @@ def test_compute_cost_matrix():
     cost_matrix = algo_instance.compute_cost_matrix(a, b)
 
     assert cost_matrix[len(a), len(b)] == 6
+
+
+def test_compute_cost_matrix_advanced():
+    config = utils.Config(5, -5, -2, 99, 9999)
+    a = "GAAC"
+    b = "CAAGAC"
+    algo_instance = algo.NWAlgo(config)
+
+    cost_matrix = algo_instance.compute_cost_matrix(a, b)
+
+    assert cost_matrix[len(a), len(b)] == 7
 
 
 def test_retrieve_previous_nodes():
